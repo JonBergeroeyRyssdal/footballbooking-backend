@@ -1,5 +1,5 @@
 // /controllers/init.controller.js
-import pool from '../config/db.js';
+import pool from '../config/db.js'
 
 export const initializeDatabase = async (req, res) => {
   try {
@@ -9,10 +9,10 @@ export const initializeDatabase = async (req, res) => {
         name VARCHAR(100),
         email VARCHAR(100) UNIQUE,
         password VARCHAR(255),
-        role ENUM('user', 'owner', 'tenant') DEFAULT 'user',
+        role ENUM('user', 'owner', 'tenant', 'admin') DEFAULT 'user',
         phone VARCHAR(20)
       );
-    `);
+    `)
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS owners (
@@ -21,14 +21,14 @@ export const initializeDatabase = async (req, res) => {
         phone VARCHAR(20),
         FOREIGN KEY (user_id) REFERENCES users(id)
       );
-    `);
+    `)
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS clubs (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) UNIQUE
       );
-    `);
+    `)
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS owner_clubs (
@@ -38,7 +38,7 @@ export const initializeDatabase = async (req, res) => {
         FOREIGN KEY (owner_id) REFERENCES owners(id),
         FOREIGN KEY (club_id) REFERENCES clubs(id)
       );
-    `);
+    `)
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS locations (
@@ -46,12 +46,13 @@ export const initializeDatabase = async (req, res) => {
         address VARCHAR(255),
         city VARCHAR(100)
       );
-    `);
+    `)
 
-    res.status(200).json({ message: 'Database-tabeller opprettet!' });
+    res.status(200).json({ message: 'Database-tabeller opprettet!' })
   } catch (error) {
-    console.error('Feil ved init:', error);
-    res.status(500).json({ error: 'Noe gikk galt under oppretting av tabeller' });
+    console.error('Feil ved init:', error)
+    res.status(500).json({ error: 'Noe gikk galt under oppretting av tabeller' })
   }
-};
+}
+
 
