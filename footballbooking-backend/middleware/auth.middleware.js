@@ -13,3 +13,12 @@ export const verifyToken = (req, res, next) => {
     next()
   })
 }
+
+export const verifyOwner = (req, res, next) => {
+  if (req.user?.role === 'owner') {
+    next()
+  } else {
+    return res.status(403).json({ message: 'Kun baneeiere har tilgang' })
+  }
+}
+

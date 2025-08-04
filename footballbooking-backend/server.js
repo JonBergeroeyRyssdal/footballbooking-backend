@@ -19,6 +19,11 @@ import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import ownersRoutes from './routes/owners.routes.js';
 import initAdminRoute from './routes/initAdmin.route.js'
+import pitchRoutes from './routes/pitches.routes.js'
+
+
+
+
 
 app.get('/', (req, res) => {
   res.send('API fungerer!');
@@ -28,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/owners', ownersRoutes)
 app.use('/api/tools', initAdminRoute)
+app.use('/api/pitches', pitchRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
