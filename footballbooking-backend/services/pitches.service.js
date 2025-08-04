@@ -61,3 +61,23 @@ export const getAllPitchesService = async () => {
   return pitches
 }
 
+export const getRandomPitchesService = async (limit = 3) => {
+  const [pitches] = await pool.query(
+    `SELECT
+      p.id,
+      p.name,
+      p.size,
+      p.location,
+      o.id as ownerId,
+      u.name as ownerName
+    FROM pitches p
+    JOIN owners o ON p.owner_id = o.id
+    JOIN users u ON o.user_id = u.id
+    ORDER BY RAND()
+    LIMIT ?`,
+    [limit]
+  )
+
+  return pitches
+}
+

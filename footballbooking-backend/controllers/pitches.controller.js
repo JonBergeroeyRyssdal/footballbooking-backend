@@ -1,4 +1,4 @@
-import { createPitchService, getPitchesByUserId, getAllPitchesService } from '../services/pitches.service.js'
+import { createPitchService, getPitchesByUserId, getAllPitchesService, getRandomPitchesService } from '../services/pitches.service.js'
 
 export const createPitch = async (req, res) => {
   try {
@@ -35,6 +35,16 @@ export const getAllPitches = async (req, res) => {
   } catch (err) {
     console.error('Feil ved henting av alle baner:', err)
     res.status(500).json({ message: 'Kunne ikke hente baner' })
+  }
+}
+
+export const getRandomPitches = async (req, res) => {
+  try {
+    const pitches = await getRandomPitchesService(3) // Eller juster antall
+    res.json(pitches)
+  } catch (err) {
+    console.error('Feil ved henting av utvalgte baner:', err)
+    res.status(500).json({ message: 'Kunne ikke hente utvalgte baner' })
   }
 }
 
