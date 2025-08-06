@@ -35,19 +35,21 @@ export const getPitchesByUserId = async (userId) => {
   const [ownerRows] = await pool.query(
     `SELECT id FROM owners WHERE user_id = ?`,
     [userId]
-  )
+  );
 
-  if (ownerRows.length === 0) return []
+  if (ownerRows.length === 0) return [];
 
-  const ownerId = ownerRows[0].id
+  const ownerId = ownerRows[0].id;
 
+  // ✅ Her erstatter du SELECT-spørringen med den oppdaterte versjonen:
   const [pitches] = await pool.query(
-    `SELECT id, name, size, location FROM pitches WHERE owner_id = ?`,
+    `SELECT id, name, size, location, price, surface, hasLockerRoom, image FROM pitches WHERE owner_id = ?`,
     [ownerId]
-  )
+  );
 
-  return pitches
-}
+  return pitches;
+};
+
 
 export const getAllPitchesService = async () => {
   const [pitches] = await pool.query(
