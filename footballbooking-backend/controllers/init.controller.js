@@ -59,7 +59,7 @@ export const initializeDatabase = async (req, res) => {
         surface VARCHAR(100),
         hasLockerRoom BOOLEAN DEFAULT false,
         price INT DEFAULT 0,
-        image TEXT,
+        image LONGTEXT,
         FOREIGN KEY (owner_id) REFERENCES owners(id)
       );
     `)
