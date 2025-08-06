@@ -18,9 +18,9 @@ export const getAllUsers = async (req, res) => {
 export const getAllOwners = async (req, res) => {
   try {
     const [owners] = await pool.query(`
-      SELECT u.id, u.name, u.email, u.phone
-      FROM users u
-      JOIN owners o ON u.id = o.user_id
+      SELECT o.id AS owner_id, u.name, u.email, u.phone
+      FROM owners o
+      JOIN users u ON u.id = o.user_id
     `)
 
     res.status(200).json(owners)
@@ -29,6 +29,7 @@ export const getAllOwners = async (req, res) => {
     res.status(500).json({ message: 'Kunne ikke hente eiere' })
   }
 }
+
 
 export const getUserCounts = async (req, res) => {
   try {
@@ -40,4 +41,20 @@ export const getUserCounts = async (req, res) => {
     res.status(500).json({ message: 'Kunne ikke hente telling' })
   }
 }
+
+// GET /api/admin/owners/:ownerId/pitches
+export const getPitchesByOwner = async (req, res) => {
+  const { ownerId } = req.params;
+
+  try {
+    const [pitches] = await pool.query(
+      `SELECT id, name, size, location FROM pitches WHERE owner_id = ?`,
+      [ownerId]
+    );
+    res.json(pitches);
+  } catch (err) {
+    console.error('Feil ved henting av baner:', err);
+    res.status(500).json({ message: 'Kunne ikke hente baner for eier' });
+  }
+};
 
