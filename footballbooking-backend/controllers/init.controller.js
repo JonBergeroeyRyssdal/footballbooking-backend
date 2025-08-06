@@ -56,6 +56,10 @@ export const initializeDatabase = async (req, res) => {
         name VARCHAR(100) NOT NULL,
         size ENUM('5er', '7er', '11er') NOT NULL,
         location VARCHAR(100) NOT NULL,
+        surface VARCHAR(100),
+        hasLockerRoom BOOLEAN DEFAULT false,
+        price INT DEFAULT 0,
+        image TEXT,
         FOREIGN KEY (owner_id) REFERENCES owners(id)
       );
     `)
@@ -104,4 +108,5 @@ export const initializeDatabase = async (req, res) => {
     res.status(500).json({ error: 'Noe gikk galt under oppretting av tabeller' })
   }
 }
+
 

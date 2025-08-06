@@ -1,6 +1,6 @@
 import pool from '../config/db.js'
 
-export const createPitchService = async ({ userId, name, size, location }) => {
+export const createPitchService = async ({ userId, name, size, location, price, surface, hasLockerRoom, image }) => {
   // Finn owner_id fra users.id
   const [rows] = await pool.query(`SELECT id FROM owners WHERE user_id = ?`, [userId])
 
@@ -11,9 +11,9 @@ export const createPitchService = async ({ userId, name, size, location }) => {
   const ownerId = rows[0].id
 
   const [result] = await pool.query(
-    `INSERT INTO pitches (owner_id, name, size, location)
-     VALUES (?, ?, ?, ?)`,
-    [ownerId, name, size, location]
+    `INSERT INTO pitches (owner_id, name, size, location, price, surface, hasLockerRoom, image)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [ownerId, name, size, location, price, surface, hasLockerRoom, image]
   )
 
   return {
@@ -22,8 +22,13 @@ export const createPitchService = async ({ userId, name, size, location }) => {
     name,
     size,
     location,
+    price,
+    surface,
+    hasLockerRoom,
+    image,
   }
 }
+
 
 export const getPitchesByUserId = async (userId) => {
   // Hent owner_id basert på user_id
@@ -80,4 +85,20 @@ export const getRandomPitchesService = async (limit = 3) => {
 
   return pitches
 }
+
+export const getPitchByIdService = async (pitchId) => {
+  const [rows] = await pool.query(
+    `SELECT 
+       p.id, p.name, p.size, p.location, p.price, p.surface, 
+       p.hasLockerRoom, p.image, o.id AS ownerId, u.name AS ownerName
+     FROM pitches p
+     JOIN owners o ON p.owner_id = o.id
+     JOIN users u ON o.user_id = u.id
+     WHERE p.id = ?`,
+    [pitchId]
+  )
+
+  return rows[0] || null
+}
+
 
