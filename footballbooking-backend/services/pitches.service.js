@@ -58,6 +58,10 @@ export const getAllPitchesService = async () => {
       p.name,
       p.size,
       p.location,
+      p.price,
+      p.surface,
+      p.hasLockerRoom,
+      p.image,
       o.id as ownerId,
       u.name as ownerName
     FROM pitches p
@@ -67,6 +71,7 @@ export const getAllPitchesService = async () => {
 
   return pitches
 }
+
 
 export const getRandomPitchesService = async (limit = 3) => {
   const [pitches] = await pool.query(
