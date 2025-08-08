@@ -58,3 +58,19 @@ export const getPitchesByOwner = async (req, res) => {
   }
 };
 
+export const getAdminCounts = async (req, res) => {
+  try {
+    const [[{ userCount }]] = await pool.query(`SELECT COUNT(*) AS userCount FROM users WHERE role = 'user'`)
+    const [[{ ownerCount }]] = await pool.query(`SELECT COUNT(*) AS ownerCount FROM users WHERE role = 'owner'`)
+    const [[{ pitchCount }]] = await pool.query(`SELECT COUNT(*) AS pitchCount FROM pitches`)
+
+    res.json({ userCount, ownerCount, pitchCount })
+  } catch (err) {
+    console.error('Feil ved telling av brukere, eiere og baner:', err)
+    res.status(500).json({ message: 'Kunne ikke hente tellinger' })
+  }
+}
+
+
+
+
