@@ -5,6 +5,7 @@ import {
   getRandomPitchesService,
   getPitchByIdService
 } from "../services/pitches.service.js";
+import { searchAvailablePitches } from '../services/availability.service.js'
 
 export const createPitch = async (req, res) => {
   try {
@@ -94,6 +95,20 @@ export const getAdminCounts = async (req, res) => {
   } catch (err) {
     console.error('Feil ved telling av brukere, eiere og baner:', err)
     res.status(500).json({ message: 'Kunne ikke hente tellinger' })
+  }
+}
+
+export const findAvailablePitches = async (req, res) => {
+  try {
+    const { date, start, end, city, size } = req.query
+    if (!date || !start || !end) {
+      return res.status(400).json({ error: 'Mangler påkrevde parametre: date, start, end' })
+    }
+    const rows = await searchAvailablePitches({ date, start, end, city, size })
+    res.json(rows)
+  } catch (err) {
+    console.error(err)
+    res.status(400).json({ error: err.message })
   }
 }
 

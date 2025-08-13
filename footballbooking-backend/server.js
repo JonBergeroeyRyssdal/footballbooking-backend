@@ -21,7 +21,8 @@ import userRoutes from './routes/user.routes.js';
 import ownersRoutes from './routes/owners.routes.js';
 import initAdminRoute from './routes/initAdmin.route.js'
 import pitchRoutes from './routes/pitches.routes.js'
-import adminRoutes from './routes/admin.routes.js'
+import adminRoutes from './routes/admin.routes.js';
+import availabilityRoutes from './routes/availability.routes.js'
 
 app.get('/', (req, res) => {
   res.send('API fungerer!');
@@ -33,6 +34,7 @@ app.use('/api/owners', ownersRoutes)
 app.use('/api/tools', initAdminRoute)
 app.use('/api/pitches', pitchRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/availability', availabilityRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

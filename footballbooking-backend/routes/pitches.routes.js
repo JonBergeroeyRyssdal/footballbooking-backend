@@ -4,7 +4,8 @@ import {
   getMyPitches,
   getAllPitches,
   getRandomPitches,
-  getPitchById
+  getPitchById,
+  findAvailablePitches
 } from '../controllers/pitches.controller.js'
 import { verifyToken, verifyOwner } from '../middleware/auth.middleware.js'
 
@@ -12,11 +13,12 @@ const router = express.Router()
 
 router.post('/', verifyToken, verifyOwner, createPitch)
 router.get('/mine', verifyToken, verifyOwner, getMyPitches)
-router.get('/available', getAllPitches) // 👈 NY
-router.get('/featured', getRandomPitches) // 👈 ny route
-router.get('/:id', getPitchById) // 👈 NY
-
+router.get('/available', getAllPitches)
+router.get('/featured', getRandomPitches)
+router.get('/search-available', findAvailablePitches) // ← må stå før /:id
+router.get('/:id', getPitchById)
 
 export default router
+
 
 
